@@ -38,7 +38,7 @@ class Migration(migrations.Migration):
     #     ),
     # ]
 
-operations = [
+    operations = [
         migrations.SeparateDatabaseAndState(
             state_operations=[
                 migrations.CreateModel(
