@@ -1,0 +1,33 @@
+version: 2.1
+orbs:
+  python: circleci/python@1.5.0
+jobs:
+  linting-and-tests:
+    docker:
+      - image: cimg/python:3.10.2
+    steps:
+      - checkout
+      - python/install-packages:
+          pkg-manager: pip
+      - run:
+          name: Run Linting
+          command: flake8
+      - run:
+          name: Run tests
+          command: pytest
+
+  containerization:
+    machine: true
+    steps:
+      - checkout
+      - run: |
+          docker build -t $DOCKER_USERNAME/lettings:${CIRCLE_SHA1} .
+          echo $DOCKER_PASS | docker login -u $DOCKER_USERNAME --password-stdin
+          docker push $DOCKER_USERNAME/lettings:${CIRCLE_SHA1}
+workflows:
+  project_lettings:
+    jobs:
+      - linting-and-tests
+      - containerization:
+          requires:
+            - linting-and-tests
