@@ -21,9 +21,9 @@ jobs:
     steps:
       - checkout
       - run: |
-          docker build -t lettings:lastest .
+          docker build -t lettings:latest .
           docker build -t lettings:${CIRCLE_SHA1} .
-          docker tag lettings:lastest $DOCKER_USERNAME/lettings:lastest
+          docker tag lettings:latest $DOCKER_USERNAME/lettings:latest
           docker tag lettings:${CIRCLE_SHA1} $DOCKER_USERNAME/lettings:${CIRCLE_SHA1}  
           echo $DOCKER_PASS | docker login -u $DOCKER_USERNAME --password-stdin
           docker push $DOCKER_USERNAME/lettings:latest
