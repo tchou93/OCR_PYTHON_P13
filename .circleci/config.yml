@@ -20,9 +20,7 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run:
-          name: Build set the tag and push the project to Docker
-          command: |
+      - run:  |
             docker build -t lettings:latest .
             docker build -t lettings:${CIRCLE_SHA1} .
             docker tag lettings:latest $DOCKER_USERNAME/lettings:latest
