@@ -31,20 +31,6 @@ jobs:
             docker push $DOCKER_USERNAME/lettings:latest
             docker push $DOCKER_USERNAME/lettings:${CIRCLE_SHA1}
 
-  build-deploy:
-    machine: true
-    steps:
-      - checkout
-      - run:
-          name: Build and push Docker image to Heroku
-          command: |
-            set -x
-            sudo curl https://cli-assets.heroku.com/install.sh | sh
-            HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:login
-            HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:push -a $HEROKU_APP_NAME web
-            HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:release -a $HEROKU_APP_NAME web
-          
-
 workflows:
   project_lettings:
     jobs:
@@ -52,12 +38,3 @@ workflows:
       - containerization:
           requires:
             - linting-and-tests
-          filters:
-            branches:
-              only: master
-      - build-deploy:
-          requires:
-            - containerization
-          filters:
-            branches:
-              only: master
