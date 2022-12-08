@@ -3,8 +3,10 @@ from django.urls import path, include
 
 app_name = 'main'
 
-def trigger_error(request):
+
+def trigger_error():
     return 1 / 0
+
 
 urlpatterns = [
     path('', include('apps.lettings.urls')),
