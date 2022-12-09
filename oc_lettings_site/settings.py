@@ -1,13 +1,15 @@
 import os
-import environ
+# import environ
+from dotenv import load_dotenv
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
-env = environ.Env()
-environ.Env.read_env()
+# env = environ.Env()
+# environ.Env.read_env()
+load_dotenv()
 
 sentry_sdk.init(
-    dsn="https://796c6144583541909ce61ad7e6941c9a@o4504295846772736.ingest.sentry.io/4504295849656320",
+    dsn=os.getenv('SENTRY_DSN'),
     integrations=[
         DjangoIntegration(),
     ],
@@ -23,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
