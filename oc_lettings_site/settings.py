@@ -7,7 +7,7 @@ env = environ.Env()
 environ.Env.read_env()
 
 sentry_sdk.init(
-    dsn=env('SENTRY_DNS'),
+    dsn="https://796c6144583541909ce61ad7e6941c9a@o4504295846772736.ingest.sentry.io/4504295849656320",
     integrations=[
         DjangoIntegration(),
     ],
