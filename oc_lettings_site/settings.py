@@ -2,6 +2,8 @@ import os
 from dotenv import load_dotenv
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
+from django.core.management.utils import get_random_secret_key
+
 load_dotenv()
 
 sentry_sdk.init(
@@ -21,12 +23,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY', default=get_random_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.getenv('DEBUG')
 
-ALLOWED_HOSTS = ["127.0.0.1", "lettings93.herokuapp.com", "0.0.0.0"]
+ALLOWED_HOSTS = ["127.0.0.1", "lettings93.herokuapp.com", "0.0.0.0", "localhost"]
 
 
 # Application definition

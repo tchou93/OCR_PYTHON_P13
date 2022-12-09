@@ -46,7 +46,7 @@ $which python
 - $source venv/bin/activate
 - $pip install --requirement requirements.txt
 - $python manage.py runserver
-- Aller sur http://localhost:8000 dans un navigateur.
+- Aller sur http://localhost:8000 dans un navigateur
 - Confirmer que le site fonctionne et qu'il est possible de naviguer (vous devriez voir plusieurs profils et locations).
 ```
 
@@ -81,19 +81,33 @@ $which python
 ### 1.3 Windows
 ```
 Utilisation de PowerShell, comme ci-dessus sauf :
-
-- Pour activer l'environnement virtuel, $.\venv\Scripts\Activate.ps1
-- Remplacer $which <my-command> par $(Get-Command <my-command>).Path
+- Pour activer l'environnement virtuel, $source env/Scripts/activate
 ```
 
 ### 1.4 Conteneurisation du site sous Docker
 ```
-TBD
-```
+- Créer un fichier d'environnement .env à la racine du projet
+- Ajouter les variables d'environnement (ne pas mettre d'espace et de guillemets):
+ PORT=8000
+ DEBUG=TRUE
+ SECRET_KEY => à définir
+ SENTRY_DSN => à définir (voir la partie 3)
+- Installer Docker desktop sur https://hub.docker.com/
+- S'inscrire et s'identifier
 
-### 1.5 La mise en production sous Heroku
-```
-TBD
+Pour contruire l'image: 
+- $docker build -t lettings .
+
+Pour lancer le site localement en utilisant l'image: 
+- $docker run -p 8000:8000 --env-file .env lettings
+- Ouvrir le navigateur à la page localhost:8000
+
+Pour pousser l'image vers le registre des conteneurs du Docker Hub:
+- $docker tag lettings:latest <DOCKER_ACCOUNT_NAME>/lettings:latest
+- $docker push <DOCKER_ACCOUNT_NAME>/lettings:latest
+
+Pour récupérer la dernière image via le Docker Hub:
+- $docker pull <DOCKER_ACCOUNT_NAME>/lettings:latest
 ```
 
 <a name="deploiement"></a>
@@ -106,18 +120,43 @@ Le déploiement se fait via circleCI en trois étapes successives:
 
 La tâche de conteneurisation ne doit être exécutée que si la compilation et de test sont réussies.
 Le travail de déploiement et de production ne doit s'exécuter que si le travail de conteneurisation est réussi.
+```
+### 2.1 Configuration de Docker
+```
+- Installer Docker desktop sur https://hub.docker.com/
+- S'inscrire et se connecter
+```
 
-!!!!!A compléter : un récapitulatif haut niveau du fonctionnement du déploiement
-la configuration requise pour que le déploiement fonctionne correctement
-les étapes nécessaires pour effectuer le déploiement (votre successeur doit être capable de suivre vos instructions 
-et de faire le travail sans problème, sans avoir à passer du temps à rechercher le problème/la solution lui-même).
-!!!!!
+### 2.2 Configuration de Heroku
+```
+- S'incrire sur Heroku: https://signup.heroku.com/
+- Se connecter
+- Au niveau du tableau de bord cliquer sur "New" puis "Create new app"
+- Donner un nom à l'application puis "Create app"
+- Ajouter les variables d'environnement au projet:
+SECRET_KEY => Clé secrète de l'application Django
+SENTRY_DNS => DSN Sentry d'application (voir la partie 3)
+
+```
+### 2.3 Configuration de circleCI
+```
+- Lié le compte github à circleCI à partir du lien: https://circleci.com/signup/
+- Aller sur "Projects"/"Project Setting"/"Environment variables"
+- Ajouter les variables:
+DOCKER_USERNAME => le nom d'utilisateur du compte Docker
+DOCKER_PASS => le mot de passe du compte Docker
+HEROKU_API_KEY => tableau de bord d'Heroku/"account setting"/"API KEY"
+HEROKU_APP_NAME => nom de l'application sur Heroku
+SECRET_KEY => Clé secrète de l'application Django
+SENTRY_DNS => DSN Sentry d'application (voir la partie 3)
 ```
 
 <a name="journalisation"></a>
 ## 3. Journalisation
 ```
-!!!!! A définir: Veuillez mettre à jour la documentation sur le déploiement en conséquence (là encore, votre successeur devrait pouvoir mettre en place facilement la journalisation de Sentry décrite ici)!!!!!
+- Lié le compte github à Sentry à partir du lien: https://sentry.io/signup/
+- Créer un projet 
+- Récupérer le DSN du projet: ouvrir le projet et partir sur "Project Setting"/"Client Keys (DSN)"/DSN
 ```
 
 
