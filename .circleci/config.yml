@@ -52,6 +52,12 @@ workflows:
       - containerization:
           requires:
             - linting-and-tests
+          filters:
+            branches:
+              only: master
       - build-deploy:
           requires:
             - containerization
+          filters:
+            branches:
+              only: master
