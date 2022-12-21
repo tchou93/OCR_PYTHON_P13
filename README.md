@@ -90,7 +90,7 @@ Utilisation de PowerShell, comme ci-dessus sauf :
 - Ajouter les variables d'environnement (ne pas mettre d'espace et de guillemets):
  PORT=8000
  DEBUG=TRUE
- SECRET_KEY => à définir
+ SECRET_KEY => fp$9^593hsriajg$_%=5trot9g!1qa@ew(o-1#@=&4%=hp46(s
  SENTRY_DSN => à définir (voir la partie 3)
 - Installer Docker desktop sur https://hub.docker.com/
 - S'inscrire et s'identifier
@@ -114,7 +114,7 @@ Pour récupérer la dernière image via le Docker Hub:
 ## 2. Déploiement
 ```
 Le déploiement se fait via circleCI en trois étapes successives: 
-1) L exécution du linting et la suite de tests
+1) L'exécution du linting et la suite de tests
 2) La conteneurisation du site sous Docker
 3) La mise en production sous Heroku
 
@@ -134,7 +134,7 @@ Le travail de déploiement et de production ne doit s'exécuter que si le travai
 - Au niveau du tableau de bord cliquer sur "New" puis "Create new app"
 - Donner un nom à l'application puis "Create app"
 - Ajouter les variables d'environnement au projet:
-SECRET_KEY => Clé secrète de l'application Django
+SECRET_KEY => fp$9^593hsriajg$_%=5trot9g!1qa@ew(o-1#@=&4%=hp46(s
 SENTRY_DNS => DSN Sentry d'application (voir la partie 3)
 
 ```
@@ -147,7 +147,7 @@ DOCKER_USERNAME => le nom d'utilisateur du compte Docker
 DOCKER_PASS => le mot de passe du compte Docker
 HEROKU_API_KEY => tableau de bord d'Heroku/"account setting"/"API KEY"
 HEROKU_APP_NAME => nom de l'application sur Heroku
-SECRET_KEY => Clé secrète de l'application Django
+SECRET_KEY => fp$9^593hsriajg$_%=5trot9g!1qa@ew(o-1#@=&4%=hp46(s
 SENTRY_DNS => DSN Sentry d'application (voir la partie 3)
 ```
 
