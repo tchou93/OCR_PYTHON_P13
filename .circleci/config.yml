@@ -20,11 +20,11 @@ jobs:
           key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
           paths:
             - venv
-      - run:
-          name: Run Linting
-          command: |
-            . venv/bin/activate
-            flake8
+#      - run:
+#          name: Run Linting
+#          command: |
+#            . venv/bin/activate
+#            flake8
       - run:
           name: Run tests
           command: |
