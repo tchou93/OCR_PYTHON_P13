@@ -21,10 +21,14 @@ jobs:
             - "venv"
       - run:
           name: Run Linting
-          command: flake8
+          command: |
+            . venv/bin/activate
+            flake8
       - run:
           name: Run tests
-          command: pytest
+          command: |
+            . venv/bin/activate
+            pytest
 
   containerization:
     machine: true
