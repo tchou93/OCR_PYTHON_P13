@@ -1,5 +1,4 @@
-**/__pycache__
-*.pyc
 env
 .idea
-.env
+static/.env
+.coveragerc
