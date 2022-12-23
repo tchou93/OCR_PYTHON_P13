@@ -92,6 +92,7 @@ Utilisation de PowerShell, comme ci-dessus sauf :
  DEBUG=TRUE
  SECRET_KEY => fp$9^593hsriajg$_%=5trot9g!1qa@ew(o-1#@=&4%=hp46(s
  SENTRY_DSN => à définir (voir la partie 3)
+ HEROKU_APP_NAME => à définir (voir la partie 2)
 - Installer Docker desktop sur https://hub.docker.com/
 - S'inscrire et s'identifier
 
@@ -103,6 +104,7 @@ Pour lancer le site localement en utilisant l'image:
 - Ouvrir le navigateur à la page localhost:8000
 
 Pour pousser l'image vers le registre des conteneurs du Docker Hub:
+- Se connecter au compte et entrer le mot de passe docker hub avec la commande: $docker login -u <login>
 - $docker tag lettings:latest <DOCKER_ACCOUNT_NAME>/lettings:latest
 - $docker push <DOCKER_ACCOUNT_NAME>/lettings:latest
 
@@ -118,7 +120,7 @@ Le déploiement se fait via circleCI en trois étapes successives:
 2) La conteneurisation du site sous Docker
 3) La mise en production sous Heroku
 
-La tâche de conteneurisation ne doit être exécutée que si la compilation et de test sont réussies.
+La tâche de conteneurisation ne doit être exécutée que si la compilation et les tests sont réussies.
 Le travail de déploiement et de production ne doit s'exécuter que si le travail de conteneurisation est réussi.
 ```
 ### 2.1 Configuration de Docker
@@ -131,24 +133,25 @@ Le travail de déploiement et de production ne doit s'exécuter que si le travai
 ```
 - S'incrire sur Heroku: https://signup.heroku.com/
 - Se connecter
-- Au niveau du tableau de bord cliquer sur "New" puis "Create new app"
-- Donner un nom à l'application puis "Create app"
-- Ajouter les variables d'environnement au projet:
+- Au niveau du tableau de bord, cliquer sur "New" puis "Create new app"
+- Donner un nom à l'application puis cliquer sur "Create app"
+- Aller au niveau de l'application et rentrer dans les settings, 
+ensuite, ajouter les variables d'environnement au projet (Config vars/Reveal config vars):
 SECRET_KEY => fp$9^593hsriajg$_%=5trot9g!1qa@ew(o-1#@=&4%=hp46(s
-SENTRY_DNS => DSN Sentry d'application (voir la partie 3)
-
+SENTRY_DNS => Le DSN Sentry de l'application (voir la partie 3)
+HEROKU_APP_NAME => Le nom de l'application Heroku
 ```
 ### 2.3 Configuration de circleCI
 ```
 - Lié le compte github à circleCI à partir du lien: https://circleci.com/signup/
 - Aller sur "Projects"/"Project Setting"/"Environment variables"
 - Ajouter les variables:
-DOCKER_USERNAME => le nom d'utilisateur du compte Docker
-DOCKER_PASS => le mot de passe du compte Docker
-HEROKU_API_KEY => tableau de bord d'Heroku/"account setting"/"API KEY"
-HEROKU_APP_NAME => nom de l'application sur Heroku
+DOCKER_USERNAME => Le nom d'utilisateur du compte Docker
+DOCKER_PASS => Le mot de passe du compte Docker
+HEROKU_API_KEY => Aller au niveau du tableau de bord d'Heroku/"account setting"/"API KEY"
+HEROKU_APP_NAME => Le nom de l'application sur Heroku
 SECRET_KEY => fp$9^593hsriajg$_%=5trot9g!1qa@ew(o-1#@=&4%=hp46(s
-SENTRY_DNS => DSN Sentry d'application (voir la partie 3)
+SENTRY_DNS => Le DSN Sentry de l'application (voir la partie 3)
 ```
 
 <a name="journalisation"></a>
@@ -156,7 +159,8 @@ SENTRY_DNS => DSN Sentry d'application (voir la partie 3)
 ```
 - Lié le compte github à Sentry à partir du lien: https://sentry.io/signup/
 - Créer un projet 
-- Récupérer le DSN du projet: ouvrir le projet et partir sur "Project Setting"/"Client Keys (DSN)"/DSN
+- Récupérer le DSN du projet: 
+Ouvrir le projet et partir sur "Project Setting"/"Client Keys (DSN)"/DSN
 ```
 
 
