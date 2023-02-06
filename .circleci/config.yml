@@ -1,4 +1,7 @@
 version: 2.1
+orbs:
+  docker: circleci/docker@4.0.2
+
 jobs:
   linting-and-tests:
     docker:
@@ -29,19 +32,13 @@ jobs:
             pytest
 
   containerization:
-    machine: true
     steps:
       - checkout
-      - run:
-          name: Build set the tag and push the project to Docker
-          command: |
-            docker build -t lettings:latest .
-            docker build -t lettings:${CIRCLE_SHA1} .
-            docker tag lettings:latest $DOCKER_USERNAME/lettings:latest
-            docker tag lettings:${CIRCLE_SHA1} $DOCKER_USERNAME/lettings:${CIRCLE_SHA1}  
-            echo $DOCKER_PASS | docker login -u $DOCKER_USERNAME --password-stdin
-            docker push $DOCKER_USERNAME/lettings:latest
-            docker push $DOCKER_USERNAME/lettings:${CIRCLE_SHA1}
+      - docker/build-and-push:
+          tags: [lettings:latest, lettings:$CIRCLE_SHA1]
+          image_name: $DOCKER_USERNAME/lettings
+          login_username: $DOCKER_USERNAME
+          login_password: $DOCKER_PASS
 
   build-deploy:
     machine: true
