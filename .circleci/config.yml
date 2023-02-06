@@ -4,6 +4,7 @@ orbs:
 
 jobs:
   linting-and-tests:
+    executor: python/default
     steps:
       - checkout
       - python/load-cache
