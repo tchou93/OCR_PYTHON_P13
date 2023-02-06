@@ -25,4 +25,3 @@ class TestProfile:
         assert ((simu_profiles[0])['user'])['email'] in result.content.decode()
         assert (simu_profiles[0])['favorite_city'] in result.content.decode()
         assert (simu_profiles[0])['favorite_city'] in result.content.decode()
-
