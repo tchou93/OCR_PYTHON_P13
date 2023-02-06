@@ -1,25 +1,14 @@
 version: 2.1
 orbs:
-  docker: circleci/docker@4.0.2
+  python: circleci/python@2.1.1
 
 jobs:
   linting-and-tests:
-    docker:
-      - image: cimg/python:3.10.2
     steps:
       - checkout
-      - restore_cache:
-          key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
-      - run:
-          name: Install Python deps in a venv
-          command: |
-            python -m venv venv
-            . venv/bin/activate
-            pip install -r requirements.txt
-      - save_cache:
-          key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
-          paths:
-            - venv
+      - python/load-cache
+      - python/install-deps
+      - python/save-cache
       - run:
           name: Run Linting
           command: |
@@ -32,13 +21,19 @@ jobs:
             pytest
 
   containerization:
+    machine: true
     steps:
       - checkout
-      - docker/build-and-push:
-          tags: [lettings:latest, lettings:$CIRCLE_SHA1]
-          image_name: $DOCKER_USERNAME/lettings
-          login_username: $DOCKER_USERNAME
-          login_password: $DOCKER_PASS
+      - run:
+          name: Build set the tag and push the project to Docker
+          command: |
+            docker build -t lettings:latest .
+            docker build -t lettings:${CIRCLE_SHA1} .
+            docker tag lettings:latest $DOCKER_USERNAME/lettings:latest
+            docker tag lettings:${CIRCLE_SHA1} $DOCKER_USERNAME/lettings:${CIRCLE_SHA1}  
+            echo $DOCKER_PASS | docker login -u $DOCKER_USERNAME --password-stdin
+            docker push $DOCKER_USERNAME/lettings:latest
+            docker push $DOCKER_USERNAME/lettings:${CIRCLE_SHA1}
 
   build-deploy:
     machine: true
